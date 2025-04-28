@@ -6,12 +6,12 @@ public final class NoFlight extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("NoFlight has been enabled!");
         getCommand("noflight").setExecutor(new NoFlightEffectCommand());
+        getServer().getPluginManager().registerEvents(new NoFlightListener(), this);
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+
     }
 }
