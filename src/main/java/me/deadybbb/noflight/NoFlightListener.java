@@ -12,10 +12,14 @@ public class NoFlightListener implements Listener {
             return;
         }
 
-        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+        EntityDamageEvent.DamageCause cause = event.getCause();
+        if (cause == EntityDamageEvent.DamageCause.VOID ||
+            cause == EntityDamageEvent.DamageCause.FLY_INTO_WALL ||
+            cause == EntityDamageEvent.DamageCause.FALL) {
+            //event.setCancelled(true);
             return;
         }
 
-        NoFlightEffect.applyEffect(player);
+        NoFlightEffect.applyEffect(player, 10);
     }
 }

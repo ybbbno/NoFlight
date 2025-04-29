@@ -1,5 +1,7 @@
 package me.deadybbb.noflight;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,29 +14,31 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class NoFlightEffect {
     private static final String EFFECT_KEY = "NoFlightEffect";
-    private static final int DURATION_TICKS = 20 * 10;
     private static final String TASK_KEY = "NoFlightEffectTask";
+    private static int DURATION_TICKS;
 
-    public static void applyEffect(Player player) {
+    public static void applyEffect(Player player, int seconds) {
         GameMode gamemode = player.getGameMode();
         boolean hasElytra = player.getInventory().getChestplate() != null && player.getInventory().getChestplate().getType() == Material.ELYTRA;
 
-        if (player.hasMetadata(EFFECT_KEY) || gamemode == GameMode.SPECTATOR || gamemode == GameMode.CREATIVE || !hasElytra) {
+        if (gamemode == GameMode.SPECTATOR ||
+            gamemode == GameMode.CREATIVE ||
+            !hasElytra) {
+            return;
+        }
+
+        DURATION_TICKS = seconds * 20;
+
+        if (player.hasMetadata(EFFECT_KEY)) {
+            removeEffect(player);
+            applyEffect(player, seconds);
             return;
         }
 
         if (!player.hasMetadata(EFFECT_KEY)) {
-            player.setMetadata(EFFECT_KEY, new FixedMetadataValue(JavaPlugin.getProvidingPlugin(NoFlight.class), true));
+            player.setMetadata(EFFECT_KEY,
+                    new FixedMetadataValue(JavaPlugin.getProvidingPlugin(NoFlight.class), true));
         }
-
-        player.addPotionEffect(new PotionEffect(
-                PotionEffectType.SLOW_FALLING,
-                DURATION_TICKS,
-                0,
-                true,
-                true,
-                true
-        ));
 
         if (player.hasMetadata(TASK_KEY)) {
             int taskId = player.getMetadata(TASK_KEY).get(0).asInt();
@@ -44,10 +48,15 @@ public class NoFlightEffect {
 
         BukkitTask task = new BukkitRunnable() {
             int ticks = 0;
+            int remainingSeconds;
 
             @Override
             public void run() {
-                if(!player.isOnline() || ticks >= DURATION_TICKS || !player.hasMetadata(EFFECT_KEY)) {
+                if(!player.isOnline() ||
+                   ticks >= DURATION_TICKS ||
+                   !player.hasMetadata(EFFECT_KEY) ||
+                   player.getGameMode() == GameMode.SPECTATOR ||
+                   player.getGameMode() == GameMode.CREATIVE) {
                     removeEffect(player);
                     cancel();
                     return;
@@ -56,6 +65,15 @@ public class NoFlightEffect {
                 player.setFlying(false);
                 player.setGliding(false);
                 player.setAllowFlight(false);
+
+                if (DURATION_TICKS - ticks == DURATION_TICKS) {
+                    remainingSeconds = DURATION_TICKS / 20;
+                } else if (DURATION_TICKS - ticks == 1) {
+                    remainingSeconds = 0;
+                } else {
+                    remainingSeconds = (DURATION_TICKS - ticks) / 20 + 1;
+                }
+                player.sendActionBar(Component.text("Запрет полета: " + remainingSeconds + " сек", NamedTextColor.RED));
 
                 ticks++;
             }
