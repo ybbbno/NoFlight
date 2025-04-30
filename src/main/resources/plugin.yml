@@ -1,10 +1,10 @@
 name: NoFlight
-version: '0.1.1'
+version: '0.2'
 main: me.deadybbb.noflight.NoFlight
 api-version: '1.20'
 authors: [ Ybbb ]
 commands:
   noflight:
     description: Applies the NoFlight effect to a player
-    usage: /<command> <player> <seconds>
+    usage: /<command> <player> <seconds> or /<command> reload
     permission: minecraft.command.op

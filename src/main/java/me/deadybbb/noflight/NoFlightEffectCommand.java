@@ -1,5 +1,6 @@
 package me.deadybbb.noflight;
 
+import me.deadybbb.noflight.config.ConfigManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -8,6 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class NoFlightEffectCommand implements CommandExecutor {
+    private final ConfigManager configManager;
+    public NoFlightEffectCommand(ConfigManager configManager) {
+        this.configManager = configManager;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.isOp()) {
@@ -15,8 +21,19 @@ public class NoFlightEffectCommand implements CommandExecutor {
             return true;
         }
 
+        if (args.length == 0) {
+            sender.sendMessage(Component.text("Usage: /noflight <player> <seconds> or /noflight reload", NamedTextColor.RED));
+            return false;
+        }
+
+        if (args[0].equalsIgnoreCase("reload")) {
+            configManager.loadConfig();
+            sender.sendMessage(Component.text("Configuration reloaded!", NamedTextColor.GREEN));
+            return true;
+        }
+
         if (args.length != 2) {
-            sender.sendMessage(Component.text("Usage: /noflight <player> <seconds>", NamedTextColor.RED));
+            sender.sendMessage(Component.text("Usage: /noflight <player> <seconds> or /noflight reload", NamedTextColor.RED));
             return false;
         }
 

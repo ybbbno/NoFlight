@@ -1,0 +1,44 @@
+allowed-damage-types:
+  - CONTACT
+  - SUFFOCATION
+  - FIRE
+  - FIRE_TICK
+  - LAVA
+  - DROWNING
+  - BLOCK_EXPLOSION
+  - LIGHTNING
+  - SUICIDE
+  - STARVATION
+  - POISON
+  - FALLING_BLOCK
+  - CUSTOM
+  - HOT_FLOOR
+  - CRAMMING
+  - FREEZE
+  - ENTITY_ATTACK:
+      entities:
+        - PLAYER
+  - ENTITY_SWEEP_ATTACK:
+      entities:
+        - PLAYER
+  - PROJECTILE:
+      entities:
+        - PLAYER
+  - ENTITY_EXPLOSION:
+      entities:
+        - PLAYER
+  - THORNS:
+      entities:
+        - PLAYER
+  - MAGIC:
+      entities:
+        - PLAYER
+  - WITHER:
+      entities:
+        - PLAYER
+  - DRAGON_BREATH:
+      entities:
+        - PLAYER
+  - SONIC_BOOM:
+      entities:
+        - PLAYER
