@@ -3,6 +3,7 @@ package me.deadybbb.noflight;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 public class NoFlightListener implements Listener {
@@ -10,6 +11,12 @@ public class NoFlightListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) {
             return;
+        }
+
+        if (event instanceof EntityDamageByEntityEvent damageByEntityEvent) {
+            if (!(damageByEntityEvent.getDamager() instanceof Player)) {
+                return;
+            }
         }
 
         EntityDamageEvent.DamageCause cause = event.getCause();

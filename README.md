@@ -5,7 +5,7 @@ NoFlight is a Minecraft plugin for Paper 1.20.1 that adds a NoFlight effect. Thi
 ## Features
 
 - **No Flight Effect**:
-  - Applied to players with elytra when they take damage (excluding fall, void, or collision damage).
+  - Applied to players with elytra when they take damage (excluding fall, void, collision or mobs damage).
   - Disables flight (`setFlying`, `setGliding`, `setAllowFlight`) for a set duration (default: 10 seconds for damage).
   - Resets the effect timer on subsequent damage.
   - Does not apply in `CREATIVE` or `SPECTATOR` game modes.
@@ -18,7 +18,7 @@ NoFlight is a Minecraft plugin for Paper 1.20.1 that adds a NoFlight effect. Thi
   - Validates elytra presence and ensures the seconds are a non-negative number.
 
 - **Damage Exclusions**:
-  - Damage from falling (`FALL`), void (`VOID`), and collision (`FLY_INTO_WALL`) does not trigger the effect.
+  - Damage from falling (`FALL`), void (`VOID`), collision (`FLY_INTO_WALL`) and mobs does not trigger the effect.
 
 ## Requirements
 
