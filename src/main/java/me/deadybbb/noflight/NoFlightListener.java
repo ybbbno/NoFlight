@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityToggleGlideEvent;
 
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,17 @@ public class NoFlightListener implements Listener {
 
     public NoFlightListener(Map<DamageCause, DamageConfig> damageConfigMap) {
         this.damageConfigMap = damageConfigMap;
+    }
+
+    @EventHandler
+    public void onGlideToggle(EntityToggleGlideEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+
+        if (NoFlightEffect.hasEffect(player) && event.isGliding()) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

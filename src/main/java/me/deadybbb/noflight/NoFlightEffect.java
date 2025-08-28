@@ -94,4 +94,8 @@ public class NoFlightEffect {
             }
         }
     }
+
+    public static boolean hasEffect(Player player) {
+        return player.hasMetadata(EFFECT_KEY);
+    }
 }
